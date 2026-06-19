@@ -96,7 +96,7 @@ def buscar_vehiculo(lista, modelo):
 
     for indice, vehiculo in enumerate(lista):
 
-        if vehiculo["modelo"] == modelo:
+        if vehiculo["modelo"] == modelo: 
             return indice
     return -1
 

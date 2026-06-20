@@ -1,37 +1,33 @@
-#----------------------- FUNCION MENU Y OPCION ------------------------
+#----------------- FUNCION MENU Y OPCION ----------------------------
+
 def menu():
 
-    print("========== MENU PRINCIPAL ==========")
+    print("======== MENU PRINCIPAL ========")
     print("1. Agregar vehiculo")
     print("2. Buscar vehiculo")
     print("3. Eliminar vehiculo")
     print("4. Actualizar vehiculo")
     print("5. Mostrar vehiculo")
     print("6. Salir")
-    print("===================================")
+    print("================================")
 
 def opcion_menu():
 
     while True:
         try:
-            opcion = int(input("Ingrese una opción del menú: "))
+            opcion = int(input("Ingrese una opcion del menu: "))
             return opcion
         except ValueError:
-            print("ERROR: Opción invalida! (1-6)")
+            print("ERROR: Debe ingresar una opcion disponible (1-6)")
 
-#------------------ VALIDACIONES OPCION 1 -------------------------------
+#-------------------- VALIDACIONES OPCION 1 ---------------------------
 
-def validar_modelo(lista, modelo):
+def validar_modelo(modelo):
 
     if modelo.strip() == "":
         return False
-    
-    for indice, vehiculo in enumerate(lista):
-
-        if vehiculo["modelo"] == modelo:
-            return False
-    return True
-    
+    else:
+        return True
     
 def validar_anio(anio):
 
@@ -57,20 +53,20 @@ def validar_precio(precio):
     except:
         return False
     
-#----------------------- FUNCIONES MENU PRINCIPAL -----------------------
+#------------------------ FUNCIONES DEL MENU ---------------------------
 
 def agregar_vehiculo(listavehiculo):
 
-    modelo = input("Ingrese modelo del vehiculo: ").title()
+    modelo = input("Ingrese el modelo del vehiculo: ").title()
     anio = input("Ingrese año del vehiculo: ")
     precio = input("Ingrese precio del vehiculo: ")
 
-    modelovalidado = validar_modelo(listavehiculo, modelo)
+    modelovalidado = validar_modelo(modelo)
     aniovalidado = validar_anio(anio)
     preciovalidado = validar_precio(precio)
 
     if not modelovalidado:
-        print("El nombre no puede quedar vacio o estar repetido.")
+        print("El modelo no puede quedar vacio.")
     if not aniovalidado:
         print("El año debe ser mayor que 1900.")
     if not preciovalidado:
@@ -84,13 +80,13 @@ def agregar_vehiculo(listavehiculo):
             "precio" : float(precio),
             "disponible" : False
         }
-
+        
         listavehiculo.append(vehiculo)
-        print("--- VEHICULO AGREGADO ÉXITOSAMENTE! ---")
+        print("---- VEHICULO AGREGADO EXITOSAMENTE ---")
         print("")
 
     else:
-        print("ERROR: No se pudo agregar el vehiculo!")
+        print("--- No se pudo agregar el vehiculo! ---")
 
 def buscar_vehiculo(lista, modelo):
 
@@ -112,7 +108,7 @@ def actualizar_vehiculo(lista):
 def mostrar_vehiculo(lista):
 
     if len(lista) == 0:
-        print("No hay vehiculos registrados!")
+        print("No hay vehiculos registrados.")
         return
     
     actualizar_vehiculo(lista)
@@ -126,10 +122,8 @@ def mostrar_vehiculo(lista):
         print(f"Precio: {vehiculo["precio"]}")
         print(f"Disponibilidad: {estado}")
         print("==============================")
-    
-#----------------- MAIN MENU -----------------------------------------------
 
-coleccion_vehiculo = []
+coleccion_vehiculos = []
 
 while True:
 
@@ -139,50 +133,56 @@ while True:
     match opcionMenu:
 
         case 1:
-            agregar_vehiculo(coleccion_vehiculo)
+            agregar_vehiculo(coleccion_vehiculos)
+
         case 2:
-            buscar = input("Ingrese el vehiculo a buscar: ").title()
-            posicion = buscar_vehiculo(coleccion_vehiculo, buscar)
+            buscar = input("Ingrese el nombre del vehiculo a buscar: ").title()
+            posicion = buscar_vehiculo(coleccion_vehiculos, buscar)
 
             if posicion != -1:
-                actualizar_vehiculo(coleccion_vehiculo)
+                actualizar_vehiculo(coleccion_vehiculos)
 
-                v = coleccion_vehiculo[posicion]
+                v = coleccion_vehiculos[posicion]
 
                 estado = "DISPONIBLE" if v["disponible"] else "NO DISPONIBLE"
 
-                print(f"--- VEHICULO ENCONTRADO ---")
+                print("--- VEHICULO ENCONTRADO! ---")
                 print(f"Posicion: {posicion} /Modelo: {v["modelo"]} /Año: {v["anio"]} /Precio: {v["precio"]} /Disponible: {estado}")
                 print("")
+
             else:
-                print(f"Vehiculo {buscar} no encontrado!")
+                print(f"--- Vehiculo {buscar} no encontrado! ---")
+                print("")
 
         case 3:
-            eliminar = input("Ingrese el vehiculo a eliminar: ").title()
-            posicion = buscar_vehiculo(coleccion_vehiculo, eliminar)
+            eliminar = input("Ingrese el vehiculo que desea eliminar: ").title()
+            posicion = buscar_vehiculo(coleccion_vehiculos, eliminar)
 
             if posicion != -1:
-                coleccion_vehiculo.pop(posicion)
-                print(f"--- Vehiculo {eliminar} eliminado éxitosamente! ---")
+
+                coleccion_vehiculos.pop(posicion)
+                print(f"--- Vehiculo {eliminar} eliminado exitosamente ---")
                 print("")
 
             else:
-                print(f"El vehiculo {eliminar} no se encuentra registrado")
+                print(f"--- El vehiculo {eliminar} no se encuentra registrado ---")
+                print("")
 
-        case 4:
-            actualizar_vehiculo(coleccion_vehiculo)
+        case 4: 
+            actualizar_vehiculo(coleccion_vehiculos)
             print("--- DISPONIBILIDAD ACTUALIZADA! ---")
-            print("")
-        
+
         case 5:
-            print("--- VEHICULOS REGISTRADOS ---")
-            mostrar_vehiculo(coleccion_vehiculo)
+            print("---- VEHICULOS ----")
+            mostrar_vehiculo(coleccion_vehiculos)
 
         case 6:
             print("Gracias por usar el sistema. Vuelva Pronto")
             break
         case _:
-            print("ERROR: Opcion invalida (1-6)")
-            
+            print("ERROR: Debe ingresar una opcion disponible (1-6)")
+
+
+  
 
 
